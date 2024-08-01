@@ -16,7 +16,8 @@ app.get("/",(req,res)=>{
 
 
 
-app.use("/api/user",userRoutes)
+app.use("/api/user", userRoutes)
+app.use("/api/chat")
 
 
 //for error handling

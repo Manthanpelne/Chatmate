@@ -1,0 +1,10 @@
+const express = require("express")
+const { Authentication } = require("../middlewares/authMiddleware")
+const router = express.Router()
+
+router.route("/").post(Authentication)
+router.route("/").get(Authentication)
+router.route("/group").post(Authentication)
+router.route("/rename").put(Authentication)
+router.route("/removeFromGroup").put(Authentication)
+router.route("/addToGroup").put(Authentication)

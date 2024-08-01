@@ -59,5 +59,18 @@ const authUser = asyncHandler(async(req,res)=>{
 })
 
 
+// /api/user?search=manthan
+const allUsers = asyncHandler(async(req,res)=>{
+const userName = req.query.search ? {
+    $or : [
+        {name: {$regex : req.query.search , $options: "i"}},
+        {email: {$regex : req.query.search , $options: "i"}}
+    ]
+} : {}
 
-module.exports = {registerUser,authUser}
+const user = await User.find(userName).find({_id: {$ne: req.user._id}})
+res.status(200).send(user)
+})
+
+
+module.exports = {registerUser,authUser,allUsers}

@@ -8,7 +8,15 @@ function HomePage() {
     <div className='App'>
       
     <Container maxW="xl" centerContent>
-      
+    <div class="pyramid-loader">
+  <div class="wrapper">
+    <span class="side side1"></span>
+    <span class="side side2"></span>
+    <span class="side side3"></span>
+    <span class="side side4"></span>
+    <span class="shadow"></span>
+  </div>
+</div>
       <Box 
       d="flex"
       justifyContent="center"
@@ -24,15 +32,6 @@ function HomePage() {
            </Text>
            
       </Box>
-      <div class="pyramid-loader">
-  <div class="wrapper">
-    <span class="side side1"></span>
-    <span class="side side2"></span>
-    <span class="side side3"></span>
-    <span class="side side4"></span>
-    <span class="shadow"></span>
-  </div>
-</div>
 
       {/* login signup form */}
 

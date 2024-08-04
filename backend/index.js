@@ -3,6 +3,8 @@ const app = express()
 require("dotenv").config()
 const {connection} = require("./db")
 const userRoutes = require("./routes/userRoutes")
+const chatRoutes = require("./routes/chatRoutes")
+const messageRoutes = require("./routes/messageRoute")
 const cors = require("cors")
 const {chats} = require("../backend/data/data")
 const notFound = require("./middlewares/errorMiddleware")
@@ -17,7 +19,8 @@ app.get("/",(req,res)=>{
 
 
 app.use("/api/user", userRoutes)
-app.use("/api/chat")
+app.use("/api/chat", chatRoutes)
+app.use("/api/message", messageRoutes)
 
 
 //for error handling

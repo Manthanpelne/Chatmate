@@ -7,16 +7,17 @@ import MyChats from '../components/MyChats'
 import ChatBox from '../components/ChatBox'
 
 const ChatPage=()=> {
+  const [fetchMyChatAgain, setFetchMyChatAgain] = useState(false)
 
   const {user} = useContext(ChatContext)
 
   return (
    <div style={{width : "100%", padding:"10px"}}>
     {user && <SideDrawer/>}
-    <Box border="1px solid red" w="100%" h="91.5vh" p="10px">
+    <Box w="100%" h="91.5vh" p="10px">
     <div style={{display:"flex", justifyContent:"space-between"}}>
-    {user && <MyChats/>}
-    {user && <ChatBox/>}
+    {user && <MyChats fetchMyChatAgain={fetchMyChatAgain}/>}
+    {user && <ChatBox fetchMyChatAgain={fetchMyChatAgain}  setFetchMyChatAgain={setFetchMyChatAgain}/>}
       </div>
     </Box>
    </div>

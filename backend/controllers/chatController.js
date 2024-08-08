@@ -92,7 +92,7 @@ const createGroupChat = asyncHandler(async(req,res)=>{
         res.status(200).send(getGroupChat)
 
     } catch (error) {
-        res.status(400).send(error.message)
+        res.status(400).send(error)
     }
 })
 

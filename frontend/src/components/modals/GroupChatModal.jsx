@@ -19,8 +19,8 @@ const GroupChatModal = ({children}) => {
     const {user, chats, setChats} = useContext(ChatContext)
  
     const handleSearch=async(query)=>{
-  setSearch(query)
-  if(!query){
+    setSearch(query)
+    if(!query){
     return;
   }
   try {
@@ -35,8 +35,8 @@ const GroupChatModal = ({children}) => {
     setSearchResult(data)
   } catch (error) {
     toast({
-      title:"Error fetching chats",
-      description:"Failed to load chats",
+      title:"Error fetching users",
+      description:"Failed to load users",
       status:"error",
       duration:"3000",
       isClosable:true,

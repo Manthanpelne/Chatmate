@@ -137,7 +137,7 @@ const removeFromGroup = asyncHandler(async(req,res)=>{
     if(!removeUser){
         return res.status(400).send({message:"Chat not found"})
     }else{
-        res.status(200).send(addUsers)
+        res.status(200).send(removeUser)
     }
 })
 

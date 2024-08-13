@@ -9,6 +9,8 @@ import axios from "axios"
 import Loader from './Loader'
 import UserListItem from './User Info/UserListItem'
 import ProfileModal from './modals/ProfileModal'
+import GetSender from './GetSender'
+import NotificationBadge, { Effect } from "@parthamk/notification-badge"
 
 const SideDrawer = () => {
     const [search, setSearch]= useState("")
@@ -19,7 +21,7 @@ const SideDrawer = () => {
     const navigate = useNavigate()
     const toast = useToast()
 
-    const {user, chats, setChats, setSelectedChat, selectedChat} = useContext(ChatContext)
+    const {user, chats, setChats, setSelectedChat, selectedChat, notification, setNotification} = useContext(ChatContext)
 
     const { isOpen, onOpen, onClose } = useDisclosure()
     const btnRef = React.useRef()
@@ -95,10 +97,27 @@ const SideDrawer = () => {
         <Menu>
                 <Tooltip label="Notifications" hasArrow placement='bottom-end' bg="white" color="black">
             <MenuButton p={1}>
+                <NotificationBadge 
+                count={notification.length}
+                effect={Effect.SCALE}
+                />
                 <BellIcon fontSize="2xl" m={1} color="white"/>
             </MenuButton>
                 </Tooltip>
-            {/* <MenuList></MenuList> */}
+            <MenuList pl={2}>
+                {!notification.length && "No new messages"}
+                {notification.map((notify)=>(
+                    <MenuItem key={notify._id} onClick={()=>{
+                        setSelectedChat(notify.chat)
+                        setNotification(notification.filter((f)=>f!=notify))
+                    }}>
+                        {notify.chat.isGroupChat
+                        ? `New Message in group ${notify.chat.chatName}` :
+                         `New Message from ${GetSender(user, notify.chat.users)}`
+                        }
+                    </MenuItem>
+                ))}
+            </MenuList>
         </Menu>
 
             <Menu>

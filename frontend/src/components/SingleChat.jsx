@@ -6,10 +6,11 @@ import GetSender from "../components/GetSender"
 import ProfileModal from './modals/ProfileModal'
 import { FullSenderDetails } from '../components/GetSender'
 import UpdateGroupChatModal from './modals/UpdateGroupChatModal'
-import StyledButton from './Button'
 import axios from 'axios'
 import ScrollableChat from './ScrollableChat'
 import io from "socket.io-client"
+import Lottie from "react-lottie"
+import animationData from "./animations/typing.json"
 
 
  const ENDPOINT = "http://localhost:4500"
@@ -26,9 +27,17 @@ const SingleChat = ({fetchMyChatAgain, setFetchMyChatAgain}) => {
   const toast = useToast();
 
 
-    const {user, selectedChat, setSelectedChat} = useContext(ChatContext)
 
-
+    const {user, selectedChat, setSelectedChat, notification, setNotification} = useContext(ChatContext)
+  
+    const defaultOptions = {
+      loop: true,
+      autoplay: true,
+      animationData: animationData,
+      rendererSettings: {
+        preserveAspectRatio: "xMidYMid slice",
+      },
+    };
 
 
   const fetchMessages=async()=>{
@@ -62,7 +71,9 @@ const SingleChat = ({fetchMyChatAgain, setFetchMyChatAgain}) => {
   useEffect(()=>{
     socket = io(ENDPOINT)
     socket.emit("setup",user)
-    socket.on("connection",()=>setSocketConnected(true))
+    socket.on("connected",()=>setSocketConnected(true))
+    socket.on("typing",()=>setIsTyping(true))
+    socket.on("stop typing",()=>setIsTyping(false))
     },[])
 
 
@@ -72,10 +83,15 @@ const SingleChat = ({fetchMyChatAgain, setFetchMyChatAgain}) => {
   },[selectedChat])
 
 
+
   useEffect(()=>{
     socket.on("message recieved", (newMessageRecieved)=>{
    if(!selectedChatCompare || selectedChatCompare._id!== newMessageRecieved.chat._id){
     //give notification
+    if(!notification.includes(newMessageRecieved)){
+      setNotification([newMessageRecieved, ...notification])
+      setFetchMyChatAgain(!fetchMyChatAgain)
+    }
    }else{
     setMessages([...messages, newMessageRecieved])
    }
@@ -85,6 +101,7 @@ const SingleChat = ({fetchMyChatAgain, setFetchMyChatAgain}) => {
 
     const sendMessage=async(e)=>{
     if(e.key=="Enter" && newMessage){
+      socket.emit("stop typing", selectedChat._id)
     try {
       const config = {
         headers:{
@@ -119,7 +136,27 @@ const SingleChat = ({fetchMyChatAgain, setFetchMyChatAgain}) => {
 
     const typeHandler=(e)=>{
     setNewMessage(e.target.value)
+    //typing logic
+    if(!socketConnected) return
+    if(!typing){
+      setTyping(true)
+      socket.emit("typing", selectedChat._id)
     }
+
+    let lastTypingTime = new Date().getTime()
+    var timeLength = 1000
+
+    setTimeout(() => {
+      var timeNow = new Date().getTime()
+      var timeDiff = timeNow - lastTypingTime
+      if(timeDiff >= timeLength && typing){
+        socket.emit("stop typing", selectedChat._id)
+        setTyping(false)
+      }
+    }, timeLength);
+    }
+
+
 
   return (
     <>
@@ -127,11 +164,13 @@ const SingleChat = ({fetchMyChatAgain, setFetchMyChatAgain}) => {
         <>
         <Text 
           fontSize={{ base: "22px", md: "26px" }}
-          pb={3}
+          pb={1}
           px={2}
           w="100%"
           display="flex"
           border="1px solid grey"
+          bg="#44454a"
+          borderRadius={9}
           justifyContent={{ base: "space-between" }}
           alignItems="center"
         >
@@ -170,6 +209,9 @@ const SingleChat = ({fetchMyChatAgain, setFetchMyChatAgain}) => {
               id="first-name"
               isRequired
               mt={3}>
+              {istyping? <div><Lottie width={70} options={defaultOptions}
+                style={{marginBottom:"15px", marginLeft:"0px" }}
+              /></div> : <></>}
         <Input value={newMessage} onChange={typeHandler} className="input" placeholder="Click Enter to send a message...." />
           </FormControl>
         </Box>

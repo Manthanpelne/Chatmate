@@ -12,6 +12,8 @@ const MyChats = ({fetchMyChatAgain}) => {
   const {user,selectedChat, setSelectedChat, chats, setChats} = useContext(ChatContext)
   const toast = useToast()
 
+  console.log(chats)
+
   const fetchChats =async()=>{
   try {
     const {data} = await axios.get("http://localhost:4500/api/chat",{
@@ -84,7 +86,7 @@ const MyChats = ({fetchMyChatAgain}) => {
               <Stack>
                {chats.map((c)=>(
                 <Box onClick={()=>setSelectedChat(c)} cursor="pointer" 
-                bg={selectedChat === c ? "lightBlue" : "#E8E8E8"}
+                bg={selectedChat === c ? "#b7b8b5" : "#E8E8E8"}
                 color={selectedChat === c ? "black" : "black"}
                 px={3}
                 py={2}
@@ -92,10 +94,18 @@ const MyChats = ({fetchMyChatAgain}) => {
                 key={c._id}
                 >
                   <Text>{!c.isGroupChat? (
-                   GetSender(loggedUser,c.users)
+                    <div>
+                      {GetSender(loggedUser,c.users)}
+                      <Text fontSize="11px" fontWeight={700}>{c.createdAt.split("").splice(0,10)}</Text>
+                    </div>
                   ):(
-                   c.chatName
-                  )}</Text>
+                  <div>
+                    {c.chatName}
+                    <Text fontSize="11px" fontWeight={700}>{c.createdAt.split("").splice(0,10)}</Text>
+                  </div>
+                  )
+                  }
+                  </Text>
                 </Box>
                ))}
               </Stack>

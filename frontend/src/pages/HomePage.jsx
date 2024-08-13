@@ -17,16 +17,7 @@ function HomePage() {
   return (
     <div className='App'>
       
-    <Container maxW="xl" centerContent>
-    <div class="pyramid-loader">
-  <div class="wrapper">
-    <span class="side side1"></span>
-    <span class="side side2"></span>
-    <span class="side side3"></span>
-    <span class="side side4"></span>
-    <span class="shadow"></span>
-  </div>
-</div>
+    <Container maxW="xl" paddingTop={10} centerContent>
       <Box 
       display="flex"
       justifyContent="center"
@@ -46,7 +37,7 @@ function HomePage() {
       {/* login signup form */}
 
       <Box bg="black" w="100%" color="white" p={4} borderRadius="lg" borderWidth="1px">
-      <Tabs variant='soft-rounded' colorScheme='green'>
+      <Tabs variant='soft-rounded' colorScheme='purple'>
   <TabList mb="1em">
     <Tab color="white" width="50%">Login</Tab>
     <Tab color="white" width="50%">Sign Up</Tab>

@@ -107,7 +107,7 @@ export default function SignUp() {
         },
       };
       const { data } = await axios.post(
-        "http://localhost:4500/api/user",{
+        "https://chatmate-3z3z.onrender.com/api/user",{
           name,
           email,
           password,

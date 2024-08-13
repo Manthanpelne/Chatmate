@@ -25,7 +25,7 @@ const GroupChatModal = ({children}) => {
   }
   try {
     setLoading(true)
-    const {data} = await axios.get(`http://localhost:4500/api/user?search=${search}`,{
+    const {data} = await axios.get(`https://chatmate-3z3z.onrender.com/api/user?search=${search}`,{
       headers :{
         Authorization:`Bearer ${user.token}`
       }
@@ -63,7 +63,7 @@ const GroupChatModal = ({children}) => {
           Authorization:`Bearer ${user.token}`
         }
       };
-      const {data} = await axios.post("http://localhost:4500/api/chat/group",{
+      const {data} = await axios.post("https://chatmate-3z3z.onrender.com/api/chat/group",{
         name:groupChatName,
         users:selectedUsers.map((u)=>u._id),
       },

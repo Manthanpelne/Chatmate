@@ -16,7 +16,7 @@ const MyChats = ({fetchMyChatAgain}) => {
 
   const fetchChats =async()=>{
   try {
-    const {data} = await axios.get("http://localhost:4500/api/chat",{
+    const {data} = await axios.get("https://chatmate-3z3z.onrender.com/api/chat",{
       headers :{
         Authorization:`Bearer ${user.token}`
       }

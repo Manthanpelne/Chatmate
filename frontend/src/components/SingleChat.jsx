@@ -13,7 +13,7 @@ import Lottie from "react-lottie"
 import animationData from "./animations/typing.json"
 
 
- const ENDPOINT = "http://localhost:4500"
+ const ENDPOINT = "https://chatmate-3z3z.onrender.com/"
 var socket, selectedChatCompare
 
 
@@ -49,7 +49,7 @@ const SingleChat = ({fetchMyChatAgain, setFetchMyChatAgain}) => {
         }
       }
       setLoading(true)
-      const {data} = await axios.get(`http://localhost:4500/api/message/${selectedChat._id}`,
+      const {data} = await axios.get(`https://chatmate-3z3z.onrender.com/api/message/${selectedChat._id}`,
       config
     )
     setMessages(data)
@@ -110,7 +110,7 @@ const SingleChat = ({fetchMyChatAgain, setFetchMyChatAgain}) => {
         }
       }
       setNewMessage("")
-      const {data} = await axios.post("http://localhost:4500/api/message",{
+      const {data} = await axios.post("https://chatmate-3z3z.onrender.com/api/message",{
         content: newMessage,
         chatId: selectedChat._id,
       },

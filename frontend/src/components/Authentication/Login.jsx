@@ -38,7 +38,7 @@ function Login() {
         }
       }
 
-      const {data} = await axios.post("http://localhost:4500/api/user/login",{
+      const {data} = await axios.post("https://chatmate-3z3z.onrender.com/api/user/login",{
         email, password
       },
     config

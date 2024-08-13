@@ -40,7 +40,7 @@ const SideDrawer = () => {
             Authorization: `Bearer ${user.token}`
             }
         }
-        const {data} = await axios.post("http://localhost:4500/api/chat",{userId},config)
+        const {data} = await axios.post("https://chatmate-3z3z.onrender.com/api/chat",{userId},config)
         if(!chats.find((c)=>c._id===data.id)){
             setChats([data, ...chats])
         }
@@ -67,7 +67,7 @@ const SideDrawer = () => {
                    Authorization: `Bearer ${user.token}`
                }
             }
-            const {data} = await axios.get(`http://localhost:4500/api/user?search=${search}`,config)
+            const {data} = await axios.get(`https://chatmate-3z3z.onrender.com/api/user?search=${search}`,config)
             setLoading(false)
             setSearchResult(data)
         } catch (error) {

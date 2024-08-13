@@ -26,7 +26,7 @@ const UpdateGroupChatModal = ({fetchMyChatAgain, setFetchMyChatAgain, fetchMessa
             Authorization:`Bearer ${user.token}`
           }
         };
-        const {data} = await axios.put("http://localhost:4500/api/chat/removeFromGroup",{
+        const {data} = await axios.put("https://chatmate-3z3z.onrender.com/api/chat/removeFromGroup",{
         chatId : selectedChat._id,
         userId: user1._id
         },
@@ -65,7 +65,7 @@ const UpdateGroupChatModal = ({fetchMyChatAgain, setFetchMyChatAgain, fetchMessa
             Authorization:`Bearer ${user.token}`
           }
         };
-        const {data} = await axios.put("http://localhost:4500/api/chat/rename",{
+        const {data} = await axios.put("https://chatmate-3z3z.onrender.com/api/chat/rename",{
           chatName : groupChatName,
           chatId : selectedChat._id
         },
@@ -104,7 +104,7 @@ const UpdateGroupChatModal = ({fetchMyChatAgain, setFetchMyChatAgain, fetchMessa
     }
     try {
       setLoading(true)
-      const {data} = await axios.get(`http://localhost:4500/api/user?search=${search}`,{
+      const {data} = await axios.get(`https://chatmate-3z3z.onrender.com/api/user?search=${search}`,{
         headers :{
           Authorization:`Bearer ${user.token}`
         }
@@ -156,7 +156,7 @@ const UpdateGroupChatModal = ({fetchMyChatAgain, setFetchMyChatAgain, fetchMessa
           Authorization:`Bearer ${user.token}`
         }
       };
-      const {data} = await axios.put("http://localhost:4500/api/chat/addToGroup",{
+      const {data} = await axios.put("https://chatmate-3z3z.onrender.com/api/chat/addToGroup",{
         chatId : selectedChat._id,
         userId : user1._id
       },

@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import ScrollableFeed from "react-scrollable-feed"
 import { ChatContext } from '../context/ChatProvider'
 import { isLastMessage, isSameSender, isSameSenderMargin, isSameUser } from './GetSender'
-import { Avatar, Tooltip } from '@chakra-ui/react'
+import { Avatar, Text, Tooltip } from '@chakra-ui/react'
 
 const ScrollableChat = ({messages}) => {
 
@@ -33,13 +33,15 @@ const ScrollableChat = ({messages}) => {
                 m.sender._id === user._id ? "#BEE3F8" : "#e0f990"
               }`,
               marginLeft: isSameSenderMargin(messages, m, i, user._id),
-              marginTop: isSameUser(messages, m, i, user._id) ? 4 : 7,
+              marginTop: isSameUser(messages, m, i, user._id) ? 4 : 9,
               borderRadius: "7px",
-              padding: "5px 15px",
+              padding: "5px 10px 10px 12px",
               maxWidth: "75%",
             }}
           >
+            <Text fontWeight={400} color="black" fontSize={{ base: "12px", md: "14px" }}>
             {m.content}
+            </Text>
           </span>
         </div>
       ))}

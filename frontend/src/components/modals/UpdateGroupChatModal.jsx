@@ -19,173 +19,174 @@ const UpdateGroupChatModal = ({fetchMyChatAgain, setFetchMyChatAgain, fetchMessa
 
     const { selectedChat, setSelectedChat, user } = useContext(ChatContext)
 
-    const handleRemove=async(user1)=>{
+    const handleSearch = async (query) => {
+      setSearch(query);
+      if (!query) {
+        return;
+      }
+  
       try {
+        setLoading(true);
         const config = {
-          headers :{
-            Authorization:`Bearer ${user.token}`
-          }
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
         };
-        const {data} = await axios.put("https://chatmate-3z3z.onrender.com/api/chat/removeFromGroup",{
-        chatId : selectedChat._id,
-        userId: user1._id
-        },
-       config
-      );
-            user1._id === user._id ?  setSelectedChat() : setSelectedChat(data)
-          setFetchMyChatAgain(!fetchMyChatAgain)
-          fetchMessages()
-          setLoading(false)
-          toast({
-            title:"Removed!",
-            status:"success",
-            duration:"3000",
-            isClosable:true,
-            position:"top"
-        })
+        const { data } = await axios.get(`https://chatmate-3z3z.onrender.com/api/user?search=${search}`, config);
+        console.log(data);
+        setLoading(false);
+        setSearchResult(data);
       } catch (error) {
         toast({
-          title:"Something went wrong",
-          description:"Failed to update group",
-          status:"error",
-          duration:"3000",
-          isClosable:true,
-          position:"top"
-      })
+          title: "Error Occured!",
+          description: "Failed to Load the Search Results",
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+          position: "top",
+        });
+        setLoading(false);
       }
-    }
-
-    const handleRename=async()=>{
-    if(!groupChatName) return
-
-    try {
-        setRenameLoading(true)
+    };
+  
+    const handleRename = async () => {
+      if (!groupChatName) return;
+  
+      try {
+        setRenameLoading(true);
         const config = {
-          headers :{
-            Authorization:`Bearer ${user.token}`
-          }
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
         };
-        const {data} = await axios.put("https://chatmate-3z3z.onrender.com/api/chat/rename",{
-          chatName : groupChatName,
-          chatId : selectedChat._id
-        },
-       config
-      );
-          setSelectedChat(data)
-          setFetchMyChatAgain(!fetchMyChatAgain)
-          setRenameLoading(false)
-        toast({
-          title:"Update successfully completed!",
-          status:"success",
-          duration:"3000",
-          isClosable:true,
-          position:"top"
-      })
+        const { data } = await axios.put(
+          `https://chatmate-3z3z.onrender.com/api/chat/rename`,
+          {
+            chatId: selectedChat._id,
+            chatName: groupChatName,
+          },
+          config
+        );
+  
+        console.log(data._id);
+        // setSelectedChat("");
+        setSelectedChat(data);
+        setFetchMyChatAgain(!fetchMyChatAgain);
+        setRenameLoading(false);
       } catch (error) {
         toast({
-          title:"Something went wrong!",
-          description:"Failed to update!",
-          status:"error",
-          duration:"3000",
-          isClosable:true,
-          position:"top"
-      })
-      setRenameLoading(false)
+          title: "Error Occured!",
+          description: error.response.data.message,
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+          position: "top",
+        });
+        setRenameLoading(false);
       }
-      setGroupChatName("")
-    }
-
-
-
-    const handleSearch=async(query)=>{
-      setSearch(query)
-      if(!query){
-      return;
-    }
-    try {
-      setLoading(true)
-      const {data} = await axios.get(`https://chatmate-3z3z.onrender.com/api/user?search=${search}`,{
-        headers :{
-          Authorization:`Bearer ${user.token}`
-        }
-      })
-      //console.log(data)
-      setLoading(false)
-      setSearchResult(data)
-    } catch (error) {
-      toast({
-        title:"Error fetching users",
-        description:"Failed to load users",
-        status:"error",
-        duration:"3000",
-        isClosable:true,
-        position:"top"
-    })
-    setLoading(false)
-    }
-    }
-
-
-    const handleAddUser=async(user1)=>{
-    if(selectedChat.users.find((u)=>u._id===user1._id)){
-      toast({
-        title:"User is already added!",
-        status:"warning",
-        duration:300,
-        isClosable:true,
-        position:"top"
-      })
-      return
-    }
-
-    if(selectedChat.groupAdmin._id !== user._id){
-      toast({
-        title:"Only admin can add a user!",
-        status:"warning",
-        duration:300,
-        isClosable:true,
-        position:"top"
-      })
-      return
-    }
-   
-    try {
-      setLoading(true)
-      const config = {
-        headers :{
-          Authorization:`Bearer ${user.token}`
-        }
-      };
-      const {data} = await axios.put("https://chatmate-3z3z.onrender.com/api/chat/addToGroup",{
-        chatId : selectedChat._id,
-        userId : user1._id
-      },
-     config
-    );
-        setSelectedChat(data)
-        setFetchMyChatAgain(!fetchMyChatAgain)
-        setLoading(false)
+      setGroupChatName("");
+    };
+  
+    const handleAddUser = async (user1) => {
+      if (selectedChat.users.find((u) => u._id === user1._id)) {
         toast({
-          title:"Added!",
-          description:"User Added to Group!",
-          status:"success",
-          duration:"3000",
-          isClosable:true,
-          position:"top"
-      })
-    } catch (error) {
-      toast({
-        title:"Something went wrong",
-        description:"Failed to add users",
-        status:"error",
-        duration:"3000",
-        isClosable:true,
-        position:"top"
-    })
-    setLoading(false)
-    }
-
-    }
+          title: "User Already in group!",
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+          position: "top",
+        });
+        return;
+      }
+  
+      if (selectedChat.groupAdmin._id !== user._id) {
+        return toast({
+          title: "Only admins can add someone!",
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+          position: "top",
+        });
+        
+      }
+  
+      try {
+        setLoading(true);
+        const config = {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        };
+        const { data } = await axios.put(
+          `https://chatmate-3z3z.onrender.com/api/chat/addToGroup`,
+          {
+            chatId: selectedChat._id,
+            userId: user1._id,
+          },
+          config
+        );
+  
+        setSelectedChat(data);
+        setFetchMyChatAgain(!fetchMyChatAgain);
+        setLoading(false);
+      } catch (error) {
+        toast({
+          title: "Error Occured!",
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+          position: "top",
+        });
+        setLoading(false);
+      }
+      setGroupChatName("");
+    };
+  
+    const handleRemove = async (user1) => {
+      if (selectedChat.groupAdmin._id !== user._id && user1._id !== user._id) {
+        toast({
+          title: "Only admins can remove someone!",
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+          position: "top",
+        });
+        return;
+      }
+  
+      try {
+        setLoading(true);
+        const config = {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        };
+        const { data } = await axios.put(
+          `https://chatmate-3z3z.onrender.com/api/chat/removeFromGroup`,
+          {
+            chatId: selectedChat._id,
+            userId: user1._id,
+          },
+          config
+        );
+  
+        user1._id === user._id ? setSelectedChat() : setSelectedChat(data);
+        setFetchMyChatAgain(!fetchMyChatAgain);
+        fetchMessages();
+        setLoading(false);
+      } catch (error) {
+        toast({
+          title: "Error Occured!",
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+          position: "bottom",
+        });
+        setLoading(false);
+      }
+      setGroupChatName("");
+    };
+  
 
   return (
     <>
@@ -199,7 +200,7 @@ const UpdateGroupChatModal = ({fetchMyChatAgain, setFetchMyChatAgain, fetchMessa
             <Box w="100%" d="flex" flexWrap="wrap" pb={3}>
                 
                 {selectedChat.users.map((u)=>(
-                    <UserBadgeItem key={u._id} user={u} handleFunction={()=>handleRemove(u)}/>
+                    <UserBadgeItem key={u._id} user={u} admin={selectedChat.groupAdmin} handleFunction={()=>handleRemove(u)}/>
                 ))}
             </Box>
             <FormControl display="flex" pb="15px">

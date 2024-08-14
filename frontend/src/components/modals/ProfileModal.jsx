@@ -15,11 +15,11 @@ const ProfileModal = ({user, children}) => {
    <Modal size="lg" isCentered isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader fontSize="30px" display="flex" justifyContent="center">{user.name}</ModalHeader>
+          <ModalHeader fontSize={{base:"18px", md:"26px"}} display="flex" justifyContent="center">{user.name}</ModalHeader>
           <ModalCloseButton />
           <ModalBody display="flex" flexDir="column" alignItems="center" justifyContent="space-between">
             <Image borderRadius="full" boxSize="150px" src={user.pic} alt={user.name}/>
-          <Text paddingTop="5" fontSize="20px">{user.email}</Text>
+          <Text paddingTop="5" fontSize={{base:"18px", md:"26px"}}>{user.email}</Text>
           </ModalBody>
           <ModalFooter>
             <Button colorScheme='blue' mr={3} onClick={onClose}>

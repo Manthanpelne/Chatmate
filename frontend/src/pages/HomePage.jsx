@@ -22,16 +22,15 @@ function HomePage() {
       display="flex"
       justifyContent="center"
       p={3}
-      bg={"black"}
+      bg="black"
       w="100%"
       m="20px 0 0px 0"
       borderRadius="lg"
       textAlign="center"
       borderWidth="1px"
       >
-        <Text fontSize="2xl" color="white">CHAT-MATE 
+        <Text fontSize="2xl" fontFamily="bodoni moda" color="white">CHAT-MATE 
            </Text>
-           
       </Box>
 
       {/* login signup form */}

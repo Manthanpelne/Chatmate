@@ -89,10 +89,10 @@ const SideDrawer = () => {
     <Tooltip label="Search users you want to chat with" hasArrow placement='bottom-end' bg="white" color="black">
     <Button ref={btnRef} onClick={onOpen}>
         <ion-icon name="search-outline"></ion-icon>
-        {/* <Text d={{base:"none" ,md:"flex"}} px="1" pb="1">search user</Text> */}
+        <Text display={{base:"none", md:"flex"}} px="1" pb="1">search to chat</Text>
     </Button>
     </Tooltip>
-    <Text fontSize="2xl" fontFamily="Bodoni Moda" color="white">CHAT-MATE</Text>
+    <Text fontSize={{base:"14px", md:"26px"}} fontFamily="Bodoni Moda" color="white">CHAT-MATE</Text>
     <div>
         <Menu>
                 <Tooltip label="Notifications" hasArrow placement='bottom-end' bg="white" color="black">
@@ -151,7 +151,7 @@ const SideDrawer = () => {
             <Input placeholder='search by name or email' mr={2} value={search} onChange={(e)=>setSearch(e.target.value)} />
             <Button onClick={handleSearch}>Go</Button>
             </Box>
-            {loading? <Loader/> : (
+            {loading? <Loader style={{marginTop:"200px", marginLeft:"80px"}}/> : (
                 searchResult?.map((user)=>(
                     <UserListItem 
                     key={user._id}
